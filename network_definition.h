@@ -1,4 +1,4 @@
-//size definition
+
 #define EPOCH 10
 #define MINI_BATCH_SIZE 100
 #define LEARNING_RATE 4.5
@@ -56,6 +56,15 @@
 #endif
 
 enum DATA_T {BIAS, WEIGHT, ERROR, ZS, NEURON};
+
+
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+#include<stdlib.h>
+#include<random>
+#include<omp.h>
+#include"mkl.h"
 
 struct network {
     int nr_thread;

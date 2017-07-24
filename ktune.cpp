@@ -1,12 +1,18 @@
 #include<boost/python.hpp>
 #include<iostream>
-
+#include"timeutils.h"
+#include"network_definition.h"
+#include"mnist.h"
+#include"machinelearning_function.h"
 using namespace std;
 
 class Sequential
 {
 	private:
-	
+	struct network * net;
+	int recog = 0;
+	int i;
+
 	public:
 	void help(void)
 	{
@@ -49,6 +55,16 @@ class Sequential
 		cout<<"This is a function that training data \n ";
 		cout<<".fit(""EPOCH,Batch_size"") \n";
 		cout<<"example : .fit(""5,100"") \n\n";
+	}
+	void fit(void)
+	{
+		net = (struct network *) malloc (sizeof(struct network));
+		init(net);
+		mnist_load(net);
+		train(net);
+		report(net);
+		free(net);
+		return;
 	}
 	
 	/*void size(int num_layer ,...)
@@ -105,7 +121,7 @@ BOOST_PYTHON_MODULE(Ktune)
 {
     class_<Sequential>("Sequential")
           .def("help",&Sequential::help)
+		  .def("fit",&Sequential::fit)
         ;   
 };using namespace boost::python;
-
 
