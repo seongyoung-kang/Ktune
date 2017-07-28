@@ -1,4 +1,5 @@
 #include<boost/python.hpp>
+#include<cstdarg>
 #include<iostream>
 #include"timeutils.h"
 #include"network_definition.h"
@@ -10,10 +11,126 @@ class Sequential
 {
 	private:
 	struct network * net;
-	int recog = 0;
+    int recog = 0;
 	int i;
+    int temp_cnt = 0;
+	
+    public:
+    Sequential()
+    {
+        net = (struct network *)malloc(sizeof(struct network));
+    }
+    void network(char* str)
+    {
+        const char * network_name_temp = str;
+        int i;
+        for(i=0 ;i<NUMBER_OF_NETWORK+1 ;i++)
+        {
+             if(!strcmp(network_Name[i],network_name_temp))
+             {
+                net->network_info = i;
+                break;
+             }
+        }
+        if(i == NUMBER_OF_NETWORK+1)
+            printf("its error network name does not matching \n");
+        printf("%d %d",net->network_info,i);
+    }
+    void layersize(int num)
+    {
+        net->num_layer = num;
+        net->layer_size = (int *)malloc(sizeof(int)*num);
+    }
+    void add(int num)
+    {
+        if(temp_cnt == net->num_layer)
+            printf("its full  error!!\n");
+        else
+        {
+            net->layer_size[temp_cnt] = num;
+            temp_cnt ++; 
+        }
+    }
+    void action(char* str)
+    {
+        const char * action_name_temp = str;
+        int i;
+        for(i=0 ;i<NUMBER_OF_ACTION+1 ;i++)
+        {
+             if(!strcmp(action_Name[i],action_name_temp))
+             {
+                net->action_info = i;
+                break;
+             }
+        }
+        if(i == NUMBER_OF_ACTION+1)
+            printf("its error action name does not matching \n");
+        printf("%d %d",net->action_info,i);
+    }
 
-	public:
+    void loss(char* str)
+    {
+        const char * loss_name_temp = str;
+        int i;
+        for(i=0 ;i<NUMBER_OF_LOSS+1 ;i++)
+        {
+             if(!strcmp(loss_Name[i],loss_name_temp))
+             {
+                net->loss_info = i;
+                break;
+             }
+        }
+        if(i == NUMBER_OF_LOSS+1)
+            printf("its error loss name does not matching \n");
+        printf("%d %d",net->loss_info,i);
+    }
+
+    void optimizer(char* str)
+    {
+        const char * optimizer_name_temp = str;
+        int i;
+        for(i=0 ;i<NUMBER_OF_OPTIMIZER+1 ;i++)
+        {
+             if(!strcmp(optimizer_Name[i],optimizer_name_temp))
+             {
+                net->optimizer_info = i;
+                break;
+             }
+        }
+        if(i == NUMBER_OF_OPTIMIZER+1)
+            printf("its error optimizer name does not matching \n");
+        printf("%d %d",net->optimizer_info,i);
+    }
+
+    void data(char* str)
+    {
+        const char * data_name_temp = str;
+        int i;
+        for(i=0 ;i<NUMBER_OF_DATA+1 ;i++)
+        {
+             if(!strcmp(data_Name[i],data_name_temp))
+             {
+                net->data_info = i;
+                break;
+             }
+        }
+        if(i == NUMBER_OF_DATA+1)
+            printf("its error data name does not matching \n");
+        printf("%d %d",net->data_info,i);
+    }
+//    void add(int num , ...)
+//    {
+//        va_list list;
+//        va_start(list,num);
+//        net->num_layer = num;
+//        net->layer_size = (int *)malloc(sizeof(int)*num);
+//        for(int i=0;i<num;i++)
+//        {
+//            net->layer_size[i] = va_arg(list,int);
+//        }
+//        va_end(list);
+//    }
+    
 	void help(void)
 	{
 		cout<<"here is the function of Ktune\n\n"<<endl;
@@ -56,6 +173,7 @@ class Sequential
 		cout<<".fit(""EPOCH,Batch_size"") \n";
 		cout<<"example : .fit(""5,100"") \n\n";
 	}
+/*
 	void fit(void)
 	{
 		net = (struct network *) malloc (sizeof(struct network));
@@ -66,52 +184,7 @@ class Sequential
 		free(net);
 		return;
 	}
-	
-	/*void size(int num_layer ,...)
-    {
-		this->num_layer = num_layer;
-		layer_size = new int[num_layer];
-	
-		//layer_size array make
-		va_list ap;	int arg; int i;
-		va_start(ap,num_layer);
-		for(i=0;i<num_layer;i++)
-			layer_size[i] = va_arg(ap,int);
-		//make layer_size array is done
-
-		ac_weight = new int[num_layer];
-		ac_neuron = new int[num_layer];
-
-		int before_ac_weights = 0;
-    	int before_ac_neurals = 0;
-
-		for (i = 0; i < num_layer; i++)
-		{
-        	ac_neuron[i] = layer_size[i] + before_ac_neurals;//ac_neuron은 여태 누적한 neuron갯수..
-        	before_ac_neurals = ac_neuron[i];
-
-        	if (i == num_layer-1)
-            	continue;
-
-        	ac_weight[i] =  layer_size[i] *  layer_size[i+1] + before_ac_weights; //ac_weight는 여태 누적한 weight 의 갯수..
-        	before_ac_weights =  ac_weight[i]; 
-    	}   
-
-     neuron = new float[mini_batch_size * TOTAL_NEURONS(net)]; //neuron 배열의 크기는 minibatch_size * 총 뉴련의 숫자
-     zs = new float[mini_batch_size * TOTAL_NEURONS(net)];
-     error =  new float[mini_batch_size * TOTAL_NEURONS(net)];
-     bias = new float[TOTAL_NEURONS(net)];
-     weight = new float[TOTAL_WEIGHTS(net)];
-
-    for (i = 0; i < TOTAL_WEIGHTS(net); i++) {
-         weight[i] = randn();
-    }   
-
-    for (i = 0; i < TOTAL_NEURONS(net); i++) {
-         bias[i] = randn();
-    }   
-
-    }*/ 
+*/	
 
 };
 
@@ -121,7 +194,14 @@ BOOST_PYTHON_MODULE(Ktune)
 {
     class_<Sequential>("Sequential")
           .def("help",&Sequential::help)
-		  .def("fit",&Sequential::fit)
+          .def("network",&Sequential::network)
+          .def("layersize",&Sequential::layersize)
+          .def("add",&Sequential::add)
+          .def("action",&Sequential::action)
+          .def("loss",&Sequential::loss)
+          .def("optimizer",&Sequential::optimizer)
+          .def("data",&Sequential::data)
+//		  .def("fit",&Sequential::fit)
         ;   
 };using namespace boost::python;
 

@@ -1,7 +1,7 @@
-
-#define EPOCH 10
+//size definition
+#define EPOCH 40
 #define MINI_BATCH_SIZE 100
-#define LEARNING_RATE 4.5
+#define LEARNING_RATE 0.8
 #define REPORT_F "./result/dump"
 
 #define THREAD_NUM 64
@@ -56,17 +56,27 @@
 #endif
 
 enum DATA_T {BIAS, WEIGHT, ERROR, ZS, NEURON};
+#define NUMBER_OF_NETWORK 2
+#define NUMBER_OF_ACTION 2
+#define NUMBER_OF_LOSS 1
+#define NUMBER_OF_OPTIMIZER 1
+#define NUMBER_OF_DATA 1
 
 
-#include<stdio.h>
-#include<string.h>
-#include<math.h>
-#include<stdlib.h>
-#include<random>
-#include<omp.h>
-#include"mkl.h"
+const char * network_Name[NUMBER_OF_NETWORK] = {"fully connected","CNN"};
+const char * action_Name[NUMBER_OF_ACTION] = {"sigmoid","relu"};
+const char * loss_Name[NUMBER_OF_LOSS] = {"mean_squared_error"};
+const char * optimizer_Name[NUMBER_OF_OPTIMIZER] = {"sgd"};
+const char * data_Name[NUMBER_OF_DATA] = {"mnist"};
 
 struct network {
+
+    int network_info; //this is information number that  what kind of network
+    int action_info;
+    int loss_info;
+    int optimizer_info;
+    int data_info;
+
     int nr_thread;
 	int num_layer;
 	int *layer_size;

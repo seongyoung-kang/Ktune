@@ -100,6 +100,7 @@ void init(struct network *net)
         net->bias[i] = randn();
 	}
 }
+#if 0
 void train(struct network *net)
 {
 
@@ -452,3 +453,4 @@ void report(struct network *net)
 	fprintf( f, "total : %ld.%d sec\n", TOTAL_SEC_TIME(total), TOTAL_SEC_UTIME(total));
 
 }
+#endif
